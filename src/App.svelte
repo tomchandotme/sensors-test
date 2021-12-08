@@ -1,44 +1,35 @@
 <script lang="ts">
-    let video: HTMLVideoElement;
-    let errorMsg = '';
+    import { onMount } from 'svelte';
 
-    const handleButtonClick = async () => {
-        errorMsg = '';
-        try {
-            await video.requestPictureInPicture();
-        } catch (error) {
-            errorMsg = error;
-        }
-    };
+    let gyro;
+    let errMsg = '';
 
-    const requestCamera = async () => {
-        errorMsg = '';
+    onMount(() => {
         try {
-            const mediaStream = await navigator.mediaDevices.getUserMedia({
-                video: true,
+            gyro = new Gyroscope({ frequency: 60 });
+            gyro.addEventListener('reading', (e) => {
+                console.log('Angular velocity along the X-axis ' + gyro.x);
+                console.log('Angular velocity along the Y-axis ' + gyro.y);
+                console.log('Angular velocity along the Z-axis ' + gyro.z);
             });
-            video.srcObject = mediaStream;
+            gyro.start();
         } catch (error) {
-            errorMsg = error;
+            errMsg = error;
         }
-    };
+    });
 </script>
 
 <div>
-    <h3>cam pip</h3>
-    <video bind:this={video} width={128} height={128} autoplay />
-    <span>{errorMsg}</span>
-    <button on:click={handleButtonClick}>pip</button>
-    <button on:click={requestCamera}>cam</button>
+    <h3>gyro</h3>
+    <span>{errMsg}</span>
+    {#if gyro}
+        <span>x:{gyro.x}</span><span>y:{gyro.y}</span><span>z:{gyro.z}</span>
+    {/if}
 </div>
 
 <style lang="scss">
     div {
         display: flex;
         flex-direction: column;
-    }
-
-    video {
-        background-color: #888;
     }
 </style>

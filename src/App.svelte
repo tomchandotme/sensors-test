@@ -122,8 +122,8 @@
             height: 20vmax;
             position: relative;
             transform-style: preserve-3d;
-            transform: translateZ(-10vmax) rotateX(var(--rotate-x) deg)
-                rotateY(var(--rotate-y) deg) rotateZ(var(--rotate-z) deg);
+            transform: translateZ(-10vmax) rotateX(var(--rotate-x)deg)
+                rotateY(var(--rotate-y)deg) rotateZ(var(--rotate-z)deg);
         }
 
         .cube__face {

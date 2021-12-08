@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
-
     let accelerometer: {
         gx: number;
         gy: number;
@@ -30,7 +28,7 @@
         gyroscope.z = e.alpha;
     };
 
-    onMount(() => {
+    const start = () => {
         if (
             DeviceMotionEvent &&
             typeof DeviceMotionEvent.requestPermission === 'function'
@@ -40,11 +38,12 @@
 
         window.addEventListener('devicemotion', handleMotion);
         window.addEventListener('deviceorientation', handleOrientation);
-    });
+    };
 </script>
 
 <div>
     <h3>gyro</h3>
+    <button on:click={start}>Start</button>
     <span>{JSON.stringify(accelerometer)}</span>
     <span>{JSON.stringify(gyroscope)}</span>
 </div>

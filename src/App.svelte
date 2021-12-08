@@ -28,19 +28,23 @@
         accelerometer.i = e.interval;
     };
 
-    const start = () => {
-        if (!isStarted) {
-            if (
-                DeviceMotionEvent &&
-                typeof DeviceMotionEvent.requestPermission === 'function'
-            ) {
-                DeviceMotionEvent.requestPermission();
-            }
+    const start = (e: MouseEvent) => {
+        e.preventDefault();
+        
+        if (
+            DeviceMotionEvent &&
+            typeof DeviceMotionEvent.requestPermission === 'function'
+        ) {
+            DeviceMotionEvent.requestPermission();
+        }
 
+        if (!isStarted) {
             window.addEventListener('devicemotion', handleMotion);
         } else {
             window.removeEventListener('devicemotion', handleMotion);
         }
+
+        isStarted = !isStarted;
     };
 </script>
 

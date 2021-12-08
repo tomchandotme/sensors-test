@@ -8,9 +8,9 @@
         y: number;
         z: number;
         i: number;
-    };
+    } = { gx: 0, gy: 0, gz: 0, x: 0, y: 0, z: 0, i: 0 };
 
-    let gyroscope: { x: number; y: number; z: number };
+    let gyroscope: { x: number; y: number; z: number } = { x: 0, y: 0, z: 0 };
 
     const handleMotion = (e: DeviceMotionEvent) => {
         accelerometer.gx = e.accelerationIncludingGravity.x;
@@ -30,7 +30,7 @@
 
     const start = (e: MouseEvent) => {
         e.preventDefault();
-        
+
         if (
             DeviceMotionEvent &&
             typeof DeviceMotionEvent.requestPermission === 'function'
@@ -51,8 +51,16 @@
 <div>
     <h3>gyro</h3>
     <button on:click={start}>{isStarted ? 'Stop' : 'Start'}</button>
-    <span>{JSON.stringify(accelerometer)}</span>
-    <span>{JSON.stringify(gyroscope)}</span>
+
+    <h4>accelerometer</h4>
+    {#each Object.entries(accelerometer) as [key, value]}
+        <span>{key}: {value}</span>
+    {/each}
+
+    <h4>gyroscope</h4>
+    {#each Object.entries(gyroscope) as [key, value]}
+        <span>{key}: {value}</span>
+    {/each}
 </div>
 
 <style lang="scss">

@@ -1,4 +1,5 @@
 <script lang="ts">
+    let isStarted = false;
     let accelerometer: {
         gx: number;
         gy: number;
@@ -20,30 +21,32 @@
         accelerometer.y = e.acceleration.y;
         accelerometer.z = e.acceleration.z;
 
+        gyroscope.x = e.rotationRate.beta;
+        gyroscope.y = e.rotationRate.gamma;
+        gyroscope.z = e.rotationRate.alpha;
+
         accelerometer.i = e.interval;
-    };
-    const handleOrientation = (e: DeviceOrientationEvent) => {
-        gyroscope.x = e.beta;
-        gyroscope.y = e.gamma;
-        gyroscope.z = e.alpha;
     };
 
     const start = () => {
-        if (
-            DeviceMotionEvent &&
-            typeof DeviceMotionEvent.requestPermission === 'function'
-        ) {
-            DeviceMotionEvent.requestPermission();
-        }
+        if (!isStarted) {
+            if (
+                DeviceMotionEvent &&
+                typeof DeviceMotionEvent.requestPermission === 'function'
+            ) {
+                DeviceMotionEvent.requestPermission();
+            }
 
-        window.addEventListener('devicemotion', handleMotion);
-        window.addEventListener('deviceorientation', handleOrientation);
+            window.addEventListener('devicemotion', handleMotion);
+        } else {
+            window.removeEventListener('devicemotion', handleMotion);
+        }
     };
 </script>
 
 <div>
     <h3>gyro</h3>
-    <button on:click={start}>Start</button>
+    <button on:click={start}>{isStarted ? 'Stop' : 'Start'}</button>
     <span>{JSON.stringify(accelerometer)}</span>
     <span>{JSON.stringify(gyroscope)}</span>
 </div>

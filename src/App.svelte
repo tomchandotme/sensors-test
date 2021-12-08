@@ -68,4 +68,8 @@
         display: flex;
         flex-direction: column;
     }
+
+    span {
+        font-family: monospace;
+    }
 </style>

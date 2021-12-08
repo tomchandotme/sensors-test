@@ -12,6 +12,8 @@
 
     let gyroscope: { x: number; y: number; z: number } = { x: 0, y: 0, z: 0 };
 
+    let orientation: { x: number; y: number; z: number } = { x: 0, y: 0, z: 0 };
+
     const handleMotion = (e: DeviceMotionEvent) => {
         accelerometer.gx = e.accelerationIncludingGravity.x;
         accelerometer.gy = e.accelerationIncludingGravity.y;
@@ -28,6 +30,12 @@
         accelerometer.i = e.interval;
     };
 
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+        orientation.x = e.beta;
+        orientation.y = e.gamma;
+        orientation.z = e.alpha;
+    };
+
     const start = (e: MouseEvent) => {
         e.preventDefault();
 
@@ -40,8 +48,10 @@
 
         if (!isStarted) {
             window.addEventListener('devicemotion', handleMotion);
+            window.addEventListener('deviceorientation', handleOrientation);
         } else {
             window.removeEventListener('devicemotion', handleMotion);
+            window.removeEventListener('deviceorientation', handleOrientation);
         }
 
         isStarted = !isStarted;
@@ -59,6 +69,11 @@
 
     <h4>gyroscope</h4>
     {#each Object.entries(gyroscope) as [key, value]}
+        <span>{key}: {value}</span>
+    {/each}
+
+    <h4>orientation</h4>
+    {#each Object.entries(orientation) as [key, value]}
         <span>{key}: {value}</span>
     {/each}
 </div>

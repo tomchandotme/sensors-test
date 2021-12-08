@@ -78,6 +78,20 @@
     {/each}
 </div>
 
+<div class="overlay">
+    <div
+        class="cube"
+        style="--rotate-x:{orientation.x};--rotate-y:{orientation.y};--rotate-z:{orientation.z};"
+    >
+        <div class="cube__face cube__face--front">front</div>
+        <div class="cube__face cube__face--back">back</div>
+        <div class="cube__face cube__face--right">right</div>
+        <div class="cube__face cube__face--left">left</div>
+        <div class="cube__face cube__face--top">top</div>
+        <div class="cube__face cube__face--bottom">bottom</div>
+    </div>
+</div>
+
 <style lang="scss">
     div {
         display: flex;
@@ -86,5 +100,77 @@
 
     span {
         font-family: monospace;
+    }
+
+    div.overlay {
+        z-index: -1;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        perspective: 50vmax;
+
+        .cube {
+            width: 20vmax;
+            height: 20vmax;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: translateZ(-10vmax) rotateX(var(--rotate-x) deg)
+                rotateY(var(--rotate-y) deg) rotateZ(var(--rotate-z) deg);
+        }
+
+        .cube__face {
+            position: absolute;
+            width: 20vmax;
+            height: 20vmax;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cube__face--front {
+            background: hsla(0, 100%, 50%, 0.7);
+        }
+        .cube__face--right {
+            background: hsla(60, 100%, 50%, 0.7);
+        }
+        .cube__face--back {
+            background: hsla(120, 100%, 50%, 0.7);
+        }
+        .cube__face--left {
+            background: hsla(180, 100%, 50%, 0.7);
+        }
+        .cube__face--top {
+            background: hsla(240, 100%, 50%, 0.7);
+        }
+        .cube__face--bottom {
+            background: hsla(300, 100%, 50%, 0.7);
+        }
+
+        .cube__face--front {
+            transform: rotateY(0deg) translateZ(10vmax);
+        }
+        .cube__face--right {
+            transform: rotateY(90deg) translateZ(10vmax);
+        }
+        .cube__face--back {
+            transform: rotateY(180deg) translateZ(10vmax);
+        }
+        .cube__face--left {
+            transform: rotateY(-90deg) translateZ(10vmax);
+        }
+        .cube__face--top {
+            transform: rotateX(90deg) translateZ(10vmax);
+        }
+        .cube__face--bottom {
+            transform: rotateX(-90deg) translateZ(10vmax);
+        }
     }
 </style>

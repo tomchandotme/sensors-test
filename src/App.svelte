@@ -1,30 +1,44 @@
 <script lang="ts">
-	export let name: string;
+    let video: HTMLVideoElement;
+    let errorMsg = '';
+
+    const handleButtonClick = async () => {
+        errorMsg = '';
+        try {
+            await video.requestPictureInPicture();
+        } catch (error) {
+            errorMsg = error;
+        }
+    };
+
+    const requestCamera = async () => {
+        errorMsg = '';
+        try {
+            const mediaStream = await navigator.mediaDevices.getUserMedia({
+                video: true,
+            });
+            video.srcObject = mediaStream;
+        } catch (error) {
+            errorMsg = error;
+        }
+    };
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<div>
+    <h3>cam pip</h3>
+    <video bind:this={video} width={128} height={128} autoplay />
+    <span>{errorMsg}</span>
+    <button on:click={handleButtonClick}>pip</button>
+    <button on:click={requestCamera}>cam</button>
+</div>
 
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+<style lang="scss">
+    div {
+        display: flex;
+        flex-direction: column;
+    }
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
+    video {
+        background-color: #888;
+    }
 </style>

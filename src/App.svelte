@@ -1,18 +1,19 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
-    let gyro;
     let errMsg = '';
+
+    let g = { x: 0, y: 0, z: 0 };
+
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+        g.z = e.alpha;
+        g.x = e.beta;
+        g.y = e.gamma;
+    };
 
     onMount(() => {
         try {
-            gyro = new Gyroscope({ frequency: 60 });
-            gyro.addEventListener('reading', (e) => {
-                console.log('Angular velocity along the X-axis ' + gyro.x);
-                console.log('Angular velocity along the Y-axis ' + gyro.y);
-                console.log('Angular velocity along the Z-axis ' + gyro.z);
-            });
-            gyro.start();
+            window.addEventListener('deviceorientation', handleOrientation);
         } catch (error) {
             errMsg = error;
         }
@@ -22,9 +23,7 @@
 <div>
     <h3>gyro</h3>
     <span>{errMsg}</span>
-    {#if gyro}
-        <span>x:{gyro.x}</span><span>y:{gyro.y}</span><span>z:{gyro.z}</span>
-    {/if}
+    <span>x:{g.x}</span><span>y:{g.y}</span><span>z:{g.z}</span>
 </div>
 
 <style lang="scss">

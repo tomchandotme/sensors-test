@@ -81,7 +81,7 @@
 <div class="overlay">
     <div
         class="cube"
-        style="--rotate-x:{orientation.x};--rotate-y:{orientation.y};--rotate-z:{orientation.z};"
+        style="--rotate-x:{orientation.x}deg;--rotate-y:{orientation.y}deg;--rotate-z:{orientation.z}deg;"
     >
         <div class="cube__face cube__face--front">front</div>
         <div class="cube__face cube__face--back">back</div>
@@ -122,8 +122,8 @@
             height: 20vmax;
             position: relative;
             transform-style: preserve-3d;
-            transform: translateZ(-10vmax) rotateX(var(--rotate-x)deg)
-                rotateY(var(--rotate-y)deg) rotateZ(var(--rotate-z)deg);
+            transform: translateZ(-10vmax) rotateX(var(--rotate-x))
+                rotateY(var(--rotate-y)) rotateZ(var(--rotate-z));
         }
 
         .cube__face {

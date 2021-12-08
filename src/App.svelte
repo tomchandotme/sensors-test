@@ -14,6 +14,10 @@
 
     let orientation: { x: number; y: number; z: number } = { x: 0, y: 0, z: 0 };
 
+    const calibrate = () => {
+        orientation = { x: 0, y: 0, z: 0 };
+    };
+
     const handleMotion = (e: DeviceMotionEvent) => {
         accelerometer.gx = e.accelerationIncludingGravity.x;
         accelerometer.gy = e.accelerationIncludingGravity.y;
@@ -28,12 +32,10 @@
         gyroscope.z = e.rotationRate.alpha;
 
         accelerometer.i = e.interval;
-    };
 
-    const handleOrientation = (e: DeviceOrientationEvent) => {
-        orientation.x = e.beta;
-        orientation.y = e.gamma;
-        orientation.z = e.alpha;
+        orientation.x += e.rotationRate.beta;
+        orientation.y += e.rotationRate.gamma;
+        orientation.z += e.rotationRate.alpha;
     };
 
     const start = (e: MouseEvent) => {
@@ -48,10 +50,8 @@
 
         if (!isStarted) {
             window.addEventListener('devicemotion', handleMotion);
-            window.addEventListener('deviceorientation', handleOrientation);
         } else {
             window.removeEventListener('devicemotion', handleMotion);
-            window.removeEventListener('deviceorientation', handleOrientation);
         }
 
         isStarted = !isStarted;
@@ -60,7 +60,9 @@
 
 <div>
     <h3>gyro</h3>
+
     <button on:click={start}>{isStarted ? 'Stop' : 'Start'}</button>
+    <button on:click={calibrate}>Calibrate</button>
 
     <h4>accelerometer</h4>
     {#each Object.entries(accelerometer) as [key, value]}

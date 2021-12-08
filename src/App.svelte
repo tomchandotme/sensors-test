@@ -1,29 +1,52 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
-    let errMsg = '';
+    let accelerometer: {
+        gx: number;
+        gy: number;
+        gz: number;
+        x: number;
+        y: number;
+        z: number;
+        i: number;
+    };
 
-    let g = { x: 0, y: 0, z: 0 };
+    let gyroscope: { x: number; y: number; z: number };
 
+    const handleMotion = (e: DeviceMotionEvent) => {
+        accelerometer.gx = e.accelerationIncludingGravity.x;
+        accelerometer.gy = e.accelerationIncludingGravity.y;
+        accelerometer.gz = e.accelerationIncludingGravity.z;
+
+        accelerometer.x = e.acceleration.x;
+        accelerometer.y = e.acceleration.y;
+        accelerometer.z = e.acceleration.z;
+
+        accelerometer.i = e.interval;
+    };
     const handleOrientation = (e: DeviceOrientationEvent) => {
-        g.z = e.alpha;
-        g.x = e.beta;
-        g.y = e.gamma;
+        gyroscope.x = e.beta;
+        gyroscope.y = e.gamma;
+        gyroscope.z = e.alpha;
     };
 
     onMount(() => {
-        try {
-            window.addEventListener('deviceorientation', handleOrientation);
-        } catch (error) {
-            errMsg = error;
+        if (
+            DeviceMotionEvent &&
+            typeof DeviceMotionEvent.requestPermission === 'function'
+        ) {
+            DeviceMotionEvent.requestPermission();
         }
+
+        window.addEventListener('devicemotion', handleMotion);
+        window.addEventListener('deviceorientation', handleOrientation);
     });
 </script>
 
 <div>
     <h3>gyro</h3>
-    <span>{errMsg}</span>
-    <span>x:{g.x}</span><span>y:{g.y}</span><span>z:{g.z}</span>
+    <span>{JSON.stringify(accelerometer)}</span>
+    <span>{JSON.stringify(gyroscope)}</span>
 </div>
 
 <style lang="scss">

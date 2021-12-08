@@ -33,9 +33,9 @@
 
         accelerometer.i = e.interval;
 
-        orientation.x += e.rotationRate.beta;
-        orientation.y += e.rotationRate.gamma;
-        orientation.z += e.rotationRate.alpha;
+        orientation.x += e.rotationRate.beta * e.interval;
+        orientation.y += e.rotationRate.gamma * e.interval;
+        orientation.z += e.rotationRate.alpha * e.interval;
     };
 
     const start = (e: MouseEvent) => {

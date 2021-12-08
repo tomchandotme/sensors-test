@@ -33,8 +33,8 @@
 
         accelerometer.i = e.interval;
 
-        orientation.x += e.rotationRate.alpha * e.interval;
-        orientation.y += e.rotationRate.beta * e.interval;
+        orientation.x -= e.rotationRate.alpha * e.interval;
+        orientation.y -= e.rotationRate.beta * e.interval;
         orientation.z += e.rotationRate.gamma * e.interval;
     };
 

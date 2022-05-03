@@ -59,7 +59,7 @@
 </script>
 
 <div>
-    <h3>gyro</h3>
+    <h3>sensors test</h3>
 
     <button on:click={start}>{isStarted ? 'Stop' : 'Start'}</button>
     <button on:click={calibrate}>Calibrate</button>
